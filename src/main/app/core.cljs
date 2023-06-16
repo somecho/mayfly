@@ -6,28 +6,35 @@
             [app.theme :as theme]
             [app.status :refer [status]]))
 
-(defn on-focus-out [e]
+(defn on-focus-out [e focused]
   (let [content (-> e .-target .-value)]
     (js/console.log content)
+    (swap! focused not)
     (reset! db/store (assoc @db/store :content content))))
 
 (defn notes
   []
-  (let [content (r/atom (:content @db/store))]
+  (let [content (r/atom (:content @db/store))
+        focused (r/atom false)]
     (fn []
       [:div#notes
-       [:textarea#notes-content
-        {:on-focus (fn [] (js/console.log "FOCUS IN"))
-         :on-blur on-focus-out
-         :on-change #(reset! content (-> % .-target .-value))
-         :value @content
-         :style {:outline :none
-                 :width :100%
-                 :border :none
-                 :font-size :16px
-                 :background theme/bg
-                 :min-height :92dvh
-                 :padding "8px 0"}}]])))
+       (if @focused
+         [:textarea#notes-content
+          {:on-focus (fn [])
+           :auto-focus true
+           :on-blur (fn [e] (on-focus-out e focused))
+           :on-change #(reset! content (-> % .-target .-value))
+           :value @content
+           :style {:outline :none
+                   :width :100%
+                   :border :none
+                   :font-size :16px
+                   :background theme/bg
+                   :min-height :92dvh
+                   :padding "8px 0"}}]
+         [:div {:tab-index 0
+                :on-focus #(swap! focused not)}
+          @content])])))
 
 (defn main
   "The main container"
