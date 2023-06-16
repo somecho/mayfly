@@ -1,31 +1,33 @@
 (ns app.core
   (:require [reagent.dom :as rdom]
-            [app.db :as db]
+            [reagent.core :as r]
             ["react" :as react]
+            [app.db :as db]
             [app.theme :as theme]
             [app.status :refer [status]]))
 
-(defn on-focus-out []
-  (let [content (-> (.getElementById js/document "notes-content") .-innerHTML)]
+(defn on-focus-out [e]
+  (let [content (-> e .-target .-value)]
     (js/console.log content)
     (reset! db/store (assoc @db/store :content content))))
 
 (defn notes
   []
-  (react/useEffect
-   (fn []
-     (set! (.-innerHTML (.getElementById js/document "notes-content"))
-           (:content @db/store))
-     #()))
-  [:div#notes
-   [:div#notes-content
-    {:content-editable true
-     ; to be used later for markdown conversion
-     :on-focus (fn [] (js/console.log "FOCUS IN"))
-     :on-blur on-focus-out
-     :style {:outline :none
-             :min-height :92dvh
-             :padding "8px 0"}}]])
+  (let [content (r/atom (:content @db/store))]
+    (fn []
+      [:div#notes
+       [:textarea#notes-content
+        {:on-focus (fn [] (js/console.log "FOCUS IN"))
+         :on-blur on-focus-out
+         :on-change #(reset! content (-> % .-target .-value))
+         :value @content
+         :style {:outline :none
+                 :width :100%
+                 :border :none
+                 :font-size :16px
+                 :background theme/bg
+                 :min-height :92dvh
+                 :padding "8px 0"}}]])))
 
 (defn main
   "The main container"
