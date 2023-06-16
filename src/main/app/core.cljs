@@ -1,7 +1,6 @@
 (ns app.core
   (:require [reagent.dom :as rdom]
             [reagent.core :as r]
-            ["react" :as react]
             [app.db :as db]
             [app.theme :as theme]
             [app.status :refer [status]]))
@@ -11,6 +10,10 @@
     (js/console.log content)
     (swap! focused not)
     (reset! db/store (assoc @db/store :content content))))
+
+(defn on-change [e content]
+  (reset! content (-> e .-target .-value))
+  (reset! db/store (assoc @db/store :content @content)))
 
 (defn notes
   []
@@ -23,7 +26,7 @@
           {:on-focus (fn [])
            :auto-focus true
            :on-blur (fn [e] (on-focus-out e focused))
-           :on-change #(reset! content (-> % .-target .-value))
+           :on-change (fn [e] (on-change e content))
            :value @content
            :style {:outline :none
                    :width :100%
@@ -33,6 +36,7 @@
                    :min-height :92dvh
                    :padding "8px 0"}}]
          [:div {:tab-index 0
+                :style {:min-height :95dvh}
                 :on-focus #(swap! focused not)}
           @content])])))
 

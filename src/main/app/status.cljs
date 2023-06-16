@@ -1,5 +1,7 @@
 (ns app.status
   (:require [app.theme :as theme]
+            [app.db :as db]
+            [clojure.string :as str]
             [reagent.core :as r]))
 
 (def days-short ["Mon" "Tue" "Wed" "Thu" "Fri" "Sat" "Sun"])
@@ -40,7 +42,12 @@
 
 (defn character-status
   []
-  [:div "0 characters"])
+  (let [characters (-> (:content @db/store)
+                       (str/split #"")
+                       (as-> all-chars
+                             (filter #(not= " " %) all-chars))
+                       (rest))]
+    [:div (str (count characters) " characters")]))
 
 (defn separator [] [:div "❯"])
 
