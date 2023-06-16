@@ -6,5 +6,6 @@
  :builds
  {:app
   {:target :browser,
-   :devtool {:reload-strategy :full},
+   :release {:compiler-options {:optimizations :advanced}}
+   :devtool {:reload-strategy :full}
    :modules {:main {:entries [app.core]}}}}}
