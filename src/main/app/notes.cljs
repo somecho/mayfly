@@ -1,6 +1,7 @@
 (ns app.notes
   (:require [app.db :as db]
             [app.theme :as theme]
+            [app.date :as date]
             [reagent.core :as r]
             [nextjournal.markdown :as md]
             [nextjournal.markdown.transform :as md.transform]))
@@ -12,6 +13,7 @@
 
 (defn on-change [e content]
   (reset! content (-> e .-target .-value))
+  (reset! db/store (assoc @db/store :last-updated (date/get-date-today)))
   (reset! db/store (assoc @db/store :content @content)))
 
 (defn notes
