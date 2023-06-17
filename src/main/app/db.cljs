@@ -7,8 +7,7 @@
 (defn init []
   (let [content (.getItem js/localStorage "content")
         last-updated (.getItem js/localStorage "lastUpdated")]
-    (when content
-      (reset! store (assoc @store :content content)))
+    (when content (reset! store (assoc @store :content content)))
     (when (and last-updated
                (not= last-updated (date/get-date-today)))
       (reset! store (assoc @store :content "")))))

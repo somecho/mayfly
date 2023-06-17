@@ -1,7 +1,6 @@
 (ns app.date)
 
 (def days-short ["Mon" "Tue" "Wed" "Thu" "Fri" "Sat" "Sun"])
-
 (def interval 86400000)
 (defn pad [n] (-> n .toString (.padStart "2" "0")))
 (defn get-day [] (-> (js/Date.) .getDate pad))

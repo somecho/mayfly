@@ -5,23 +5,17 @@
             [app.notes :refer [notes]]
             [app.status :refer [status]]))
 
-(defn main
-  "The main container"
-  []
-  [:div#main
-   {:style {:min-width :360px
-            :width :60dvw
-            :max-width :800px
-            :margin :auto}}
+(defn main []
+  [:div#main {:style {:min-width :360px
+                      :width :60dvw
+                      :max-width :800px
+                      :margin :auto}}
    [status]
-   [:f> notes]])
+   [notes]])
 
-(defn app
-  "Root app"
-  []
-  [:div#app
-   {:style {:background theme/bg
-            :height :100dvh}}
+(defn app []
+  [:div#app {:style {:background theme/bg
+                     :height :100dvh}}
    [main]])
 
 (db/init)

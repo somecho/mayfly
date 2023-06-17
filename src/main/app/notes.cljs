@@ -16,8 +16,7 @@
   (reset! db/store (assoc @db/store :last-updated (date/get-date-today)))
   (reset! db/store (assoc @db/store :content @content)))
 
-(defn notes
-  []
+(defn notes []
   (let [content (r/atom (:content @db/store))
         focused (r/atom false)
         padding "8px 0"
@@ -27,8 +26,8 @@
        (if @focused
          [:textarea#notes-content
           {:auto-focus true
-           :on-blur (fn [e] (on-focus-out e focused))
-           :on-change (fn [e] (on-change e content))
+           :on-blur #(on-focus-out % focused)
+           :on-change #(on-change % content)
            :value @content
            :style {:outline :none
                    :width :100%
@@ -42,5 +41,3 @@
                         :min-height min-height}
                 :on-focus #(swap! focused not)}
           (md.transform/->hiccup (md/parse @content))])])))
-
-
