@@ -6,3 +6,8 @@
 	box-sizing: border-box;
 	font-family: "IBM Plex Sans", sans-serif;
 }
+
+li {
+	list-style-position: inside;
+	padding-left: 16px;
+}

@@ -1,13 +1,14 @@
 (ns app.core
   (:require [reagent.dom :as rdom]
             [reagent.core :as r]
+            [nextjournal.markdown :as md]
+            [nextjournal.markdown.transform :as md.transform]
             [app.db :as db]
             [app.theme :as theme]
             [app.status :refer [status]]))
 
 (defn on-focus-out [e focused]
   (let [content (-> e .-target .-value)]
-    (js/console.log content)
     (swap! focused not)
     (reset! db/store (assoc @db/store :content content))))
 
@@ -36,9 +37,10 @@
                    :min-height :92dvh
                    :padding "8px 0"}}]
          [:div {:tab-index 0
-                :style {:min-height :95dvh}
+                :style {:padding "8px 0"
+                        :min-height :92dvh}
                 :on-focus #(swap! focused not)}
-          @content])])))
+          (md.transform/->hiccup (md/parse @content))])])))
 
 (defn main
   "The main container"
