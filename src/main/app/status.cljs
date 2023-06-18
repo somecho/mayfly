@@ -5,16 +5,14 @@
             [clojure.string :as str]
             [reagent.core :as r]))
 
-(defn date-status
-  []
+(defn date-status []
   (let [date (js/Date.)
         day (nth date/days-short (.getDay date))
         day-of-month (date/get-day)
         month (date/get-month)]
     [:div (str day " " day-of-month "/" month)]))
-(date/get-date-today)
-(defn reset-status
-  []
+
+(defn reset-status []
   (let [now (r/atom (.getTime (js/Date.)))]
     (fn []
       (js/setInterval (fn [] (reset! now (.getTime (js/Date.)))) 1000)
@@ -24,8 +22,7 @@
         (db/reset-content)
         [:div (str "resetting in " (date/millis-to-time remaining))]))))
 
-(defn character-status
-  []
+(defn character-status []
   (let [characters (-> (:content @db/store)
                        (str/split #"")
                        (as-> all-chars
@@ -50,5 +47,3 @@
     [separator]
     [character-status]]
    [:hr {:style {:border-top (str "1px solid " theme/secondary)}}]])
-
-
