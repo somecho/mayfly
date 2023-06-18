@@ -1,6 +1,6 @@
 {
   "name": "mayfly",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "private": true,
   "devDependencies": {
     "shadow-cljs": "2.23.3"
