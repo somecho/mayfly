@@ -40,5 +40,6 @@
                 :style {:padding padding
                         :min-height min-height}
                 :on-focus #(swap! focused not)}
-          (when @content
+          (if (= "" @content)
+            [:div {:style {:color theme/subtle}} "... click here and start typing ..."]
             (md.transform/->hiccup (md/parse @content)))])])))
