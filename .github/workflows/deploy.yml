@@ -1,0 +1,45 @@
+name: deploy
+on: [push, workflow_dispatch]
+
+jobs:
+  deploy:
+    name: Deploy to Glitch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: 17
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/hydrogen
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Mayfly
+        run: npx shadow-cljs release app
+
+      - name: Clone Glitch Repo
+        run: git clone ${{ secrets.GLITCH_REPO }}
+
+      - name: Update and push changes
+        run: |
+          cd mayfly
+          git config user.email "itssomicho@gmail.com"
+          git config user.name "Somē Cho"
+          git pull --rebase
+          cp ../public/index.html .
+          cp ../public/main.js .
+          cp ../public/style.css .
+          git add .
+          git commit -m "build and deploy"
+          git push
+
