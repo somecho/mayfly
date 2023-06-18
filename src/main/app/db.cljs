@@ -4,13 +4,18 @@
 
 (defonce store (r/atom {}))
 
-(defn init []
-  (let [content (.getItem js/localStorage "content")
-        last-updated (.getItem js/localStorage "lastUpdated")]
-    (when content (reset! store (assoc @store :content content)))
+(defn reset-content
+  "Wipes out the notes content when the day changes"
+  []
+  (let [last-updated (.getItem js/localStorage "lastUpdated")]
     (when (and last-updated
                (not= last-updated (date/get-date-today)))
       (reset! store (assoc @store :content "")))))
+
+(defn init []
+  (let [content (.getItem js/localStorage "content")]
+    (when content (reset! store (assoc @store :content content)))
+    (reset-content)))
 
 (defn on-store-change
   [key atom old new]

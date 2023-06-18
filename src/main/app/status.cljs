@@ -12,7 +12,7 @@
         day-of-month (date/get-day)
         month (date/get-month)]
     [:div (str day " " day-of-month "/" month)]))
-
+(date/get-date-today)
 (defn reset-status
   []
   (let [now (r/atom (.getTime (js/Date.)))]
@@ -21,6 +21,7 @@
       (let [today  (-> (js/Date. (date/get-date-today)) .getTime)
             tomorrow (+ today date/interval)
             remaining (- tomorrow @now)]
+        (db/reset-content)
         [:div (str "resetting in " (date/millis-to-time remaining))]))))
 
 (defn character-status
