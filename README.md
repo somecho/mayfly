@@ -18,3 +18,7 @@ cd mayfly
 npm install
 npx shadow-cljs watch app
 ```
+
+---
+
+© 2023 Somē Cho
