@@ -11,7 +11,8 @@
                       :max-width :800px
                       :margin :auto}}
    [status]
-   [notes]])
+   [notes]
+   [:div {:style {:color theme/subtle}} "Mayfly 0.3.7 - © 2023 Somē Cho"]])
 
 (defn app []
   [:div#app {:style {:background theme/bg
