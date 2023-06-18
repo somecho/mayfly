@@ -12,7 +12,7 @@
                       :margin :auto}}
    [status]
    [notes]
-   [:div {:style {:color theme/subtle}} "Mayfly 0.3.7 - © 2023 Somē Cho"]])
+   [:div {:style {:color theme/subtle}} "Mayfly 0.3.8 - © 2023 Somē Cho"]])
 
 (defn app []
   [:div#app {:style {:background theme/bg

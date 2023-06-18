@@ -8,7 +8,7 @@
   "Wipes out the notes content when the day changes"
   []
   (let [last-updated (.getItem js/localStorage "lastUpdated")]
-    (when (and last-updated
+    (when (and (not= "null" last-updated)
                (not= last-updated (date/get-date-today)))
       (reset! store (assoc @store :content "")))))
 
