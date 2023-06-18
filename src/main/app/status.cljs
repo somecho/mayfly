@@ -8,7 +8,7 @@
 (defn date-status
   []
   (let [date (js/Date.)
-        day (nth date/days-short (dec (.getDay date)))
+        day (nth date/days-short (.getDay date))
         day-of-month (date/get-day)
         month (date/get-month)]
     [:div (str day " " day-of-month "/" month)]))
@@ -21,7 +21,7 @@
       (let [today  (-> (js/Date. (date/get-date-today)) .getTime)
             tomorrow (+ today date/interval)
             remaining (- tomorrow @now)]
-        [:div (date/millis-to-time remaining)]))))
+        [:div (str "resetting in " (date/millis-to-time remaining))]))))
 
 (defn character-status
   []
@@ -32,7 +32,7 @@
                        (rest))]
     [:div (str (count characters) " characters")]))
 
-(defn separator [] [:div "❯"])
+(defn separator [] [:div "𐤟"])
 
 (defn status
   "The status bar"

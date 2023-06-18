@@ -40,4 +40,5 @@
                 :style {:padding padding
                         :min-height min-height}
                 :on-focus #(swap! focused not)}
-          (md.transform/->hiccup (md/parse @content))])])))
+          (when @content
+            (md.transform/->hiccup (md/parse @content)))])])))

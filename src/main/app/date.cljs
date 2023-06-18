@@ -1,6 +1,6 @@
 (ns app.date)
 
-(def days-short ["Mon" "Tue" "Wed" "Thu" "Fri" "Sat" "Sun"])
+(def days-short ["Sun" "Mon" "Tue" "Wed" "Thu" "Fri" "Sat"])
 (def interval 86400000)
 (defn pad [n] (-> n .toString (.padStart "2" "0")))
 (defn get-day [] (-> (js/Date.) .getDate pad))
@@ -13,7 +13,7 @@
         ;todo: why minus 2?
         total-hours (- (/ total-minutes 60) 2)
         hours (Math/floor total-hours)
-        minutes (Math/floor (mod total-minutes 60))
+        minutes (-> (Math/floor (mod total-minutes 60)) pad)
         seconds (-> (Math/floor (mod total-seconds 60)) pad)]
     (str hours ":" minutes ":" seconds)))
 
